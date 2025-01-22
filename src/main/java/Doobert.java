@@ -1,15 +1,13 @@
 import java.util.*;
 import java.io.*;
 
-public class Doobert {
+public abstract class Doobert {
+    public abstract void store(String input);
+    public abstract String printList();
+
     public static void main(String[] arg) throws IOException {
-        // For
+        Doobert doobert = new Storage();
         boolean exit = false;
-        enum Message {
-            list,
-            blah,
-            bye
-        }
 
         BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
         PrintWriter writer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(System.out)));
@@ -25,31 +23,21 @@ public class Doobert {
             writer.print("Your input: "); // Prompt for input
             writer.flush();
             String input = reader.readLine();
-            try {
-                Message message = Message.valueOf(input);
-                switch (message) {
-                    case list:
-                        writer.print("   ____________________________________________________________\n" +
-                                "   list\n" +
-                                "   ____________________________________________________________\n");
-                        break;
-                    case blah:
-                        writer.print("   ____________________________________________________________\n" +
-                                "   blah\n" +
-                                "   ____________________________________________________________\n");
-                        break;
-                    case bye:
-
-                        writer.print("   ____________________________________________________________\n" +
-                                "   Bye. Hope to see you again soon!\n" +
-                                "   ____________________________________________________________\n");
-                        exit = true;
-                        break;
-                }
-            } catch (IllegalArgumentException e) {
-                writer.print("   ____________________________________________________________\n" +
-                        "   I didn't understand what you just typed. Please type again.\n" +
-                        "   ____________________________________________________________\n");
+                if (input.equals("list")) {
+                    writer.print("   ____________________________________________________________\n" +
+                            doobert.printList() +
+                            "   ____________________________________________________________\n");
+                } else if (input.equals("blah")) {
+                    writer.print("   ____________________________________________________________\n" +
+                            "   blah\n" +
+                            "   ____________________________________________________________\n");
+                } else if (input.equals("bye")) {
+                    writer.print("   ____________________________________________________________\n" +
+                            "   Bye. Hope to see you again soon!\n" +
+                            "   ____________________________________________________________\n");
+                    exit = true;
+                } else {
+                    doobert.store(input);
             }
         }
 

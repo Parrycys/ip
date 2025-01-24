@@ -40,10 +40,40 @@ public class Doobert {
                 } else if (input.startsWith("unmark")) {
                     int index = Integer.parseInt(input.split(" ")[1]) - 1;
                     doobert.unmarkTask(index);
+                } else if (input.startsWith("todo")) {
+                    String description = input.substring(5);
+                    Todo todoTask = new Todo(description);
+                    doobert.store(todoTask, description);
+                } else if (input.startsWith("deadline")) {
+                    String[] fullDesc = input.substring(9).split("/by");
+                    if (fullDesc.length == 2) {
+                        String description = fullDesc[0].trim(); // Extract description
+                        String by = fullDesc[1].trim(); // Extract by (deadline)
+                        Deadline deadlineTask = new Deadline(description, by);
+                        doobert.store(deadlineTask, description);
+                    } else {
+                        System.out.println("Invalid deadline format. Use: deadline <description> /by <deadline>");
+                    }
+                } else if (input.startsWith("event")) {
+                    String[] parts = input.substring(6).split("/from");
+                    if (parts.length == 2) {
+                        String description = parts[0].trim(); // Extract description
+                        String[] timeParts = parts[1].split(" /to "); // Split /from part into from and to
+                        if (timeParts.length == 2) {
+                            String from = timeParts[0].trim(); // Extract from time
+                            String to = timeParts[1].trim(); // Extract to time
+                            Event eventTask = new Event(description, from, to); // Create Event object
+                            doobert.store(eventTask, description);
+                        } else {
+                            System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
+                        }
+                    } else {
+                        System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
+                    }
                 }
-                 else {
-                    doobert.store(input);
-            }
+
+
+
         }
 
 
@@ -52,12 +82,13 @@ public class Doobert {
     }
 
 
-    public void store(String input) {
+    public void store(Task task, String description) {
         if (currentIndex < listOfItems.length) {
-            listOfItems[currentIndex] = new Task(input);
+            listOfItems[currentIndex] = task ;
             currentIndex++;
             System.out.println("   ____________________________________________________________\n" +
-                    "   added: " + input + "\n" +
+                    "     Got it. I've added this task:\n" + task.toString() + "\n" +
+            "     Now you have " + currentIndex + " tasks in your list.\n" +
                     "   ____________________________________________________________\n");
         } else {
             System.out.println("List is full.");
@@ -69,7 +100,7 @@ public class Doobert {
                 "   Here are the tasks in your list: " );
         for (int i = 0; i < currentIndex; i++) {
             Task task = listOfItems[i];
-            System.out.println("   " + (i + 1) + ". [" + task.getStatusIcon() + "] " + task);
+            System.out.println("   " + (i + 1) + "." + task);
         }
         System.out.println("   ____________________________________________________________");
     }

@@ -19,8 +19,6 @@ public class Doobert {
 
 
         while(!exit) {
-            writer.print("Your input: "); // Prompt for input
-            writer.flush();
             String input = reader.readLine();
             Task task = new Task(input);
                 if (input.equals("list")) {
@@ -70,6 +68,8 @@ public class Doobert {
                     } else {
                         System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
                     }
+                } else {
+                    doobert.store(task, input);
                 }
 
 
@@ -87,9 +87,9 @@ public class Doobert {
             listOfItems[currentIndex] = task ;
             currentIndex++;
             System.out.println("   ____________________________________________________________\n" +
-                    "     Got it. I've added this task:\n" + task.toString() + "\n" +
+                    "     Got it. I've added this task:\n" + "      " + task.toString() + "\n" +
             "     Now you have " + currentIndex + " tasks in your list.\n" +
-                    "   ____________________________________________________________\n");
+                    "   ____________________________________________________________");
         } else {
             System.out.println("List is full.");
         }

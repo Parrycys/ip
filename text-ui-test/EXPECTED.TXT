@@ -81,3 +81,51 @@ Invalid task number.
       [E] [ ] read (from: 2pm to: 4pm)
      Now you have 5 tasks in your list.
    ____________________________________________________________
+   ____________________________________________________________
+   Here are the tasks in your list: 
+   1.[ ] read book
+   2.[T] [ ] borrow book
+   3.[D] [ ] return book (by: Sunday)
+   4.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+   5.[E] [ ] read (from: 2pm to: 4pm)
+   ____________________________________________________________
+   ____________________________________________________________
+   Error: Invalid delete command. Use: delete <task_number>
+   ____________________________________________________________
+   ____________________________________________________________
+   Error: Invalid delete command. Use: delete <task_number>
+   ____________________________________________________________
+   ____________________________________________________________
+     Noted. I've removed this task:
+     [D] [ ] return book (by: Sunday)
+     Now you have 4 task(s) in the list.
+   ____________________________________________________________
+Invalid task number to delete.
+   ____________________________________________________________
+   Nice! I've marked this task as done: 
+   [X] borrow book
+   ____________________________________________________________
+
+   ____________________________________________________________
+   Here are the tasks in your list: 
+   1.[ ] read book
+   2.[T] [X] borrow book
+   3.[E] [ ] project meeting (from: Mon 2pm to: 4pm)
+   4.[E] [ ] read (from: 2pm to: 4pm)
+   ____________________________________________________________
+   ____________________________________________________________
+   Nice! I've marked this task as done: 
+   [X] project meeting
+   ____________________________________________________________
+
+   ____________________________________________________________
+     Noted. I've removed this task:
+     [E] [X] project meeting (from: Mon 2pm to: 4pm)
+     Now you have 3 task(s) in the list.
+   ____________________________________________________________
+   ____________________________________________________________
+   Here are the tasks in your list: 
+   1.[ ] read book
+   2.[T] [X] borrow book
+   3.[E] [ ] read (from: 2pm to: 4pm)
+   ____________________________________________________________

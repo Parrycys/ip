@@ -20,3 +20,13 @@ event read /from 2pm
 event read /from 2pm to
 event read /from 2pm /to
 event read /from 2pm /to 4pm
+list
+delete
+delete abc
+delete 3
+delete 5
+mark 2
+list
+mark 3
+delete 3
+list

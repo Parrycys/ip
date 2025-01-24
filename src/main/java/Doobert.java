@@ -2,8 +2,7 @@ import java.util.*;
 import java.io.*;
 
 public class Doobert {
-    private Task[] listOfItems = new Task[100];
-    private int currentIndex = 0;
+    private List<Task> listOfItems = new ArrayList<>();
 
     public static void main(String[] arg) throws IOException {
         boolean exit = false;
@@ -70,6 +69,11 @@ public class Doobert {
                             DoobertException.validateEventCommand(timeParts);
                         }
                     }
+                } else if (input.startsWith("delete")) {
+                    String[] parts = input.split(" ");
+                    DoobertException.validateDeleteCommand(parts); // Validate delete command
+                    int index = Integer.parseInt(parts[1]) - 1; // Convert to 0-based index
+                    doobert.deleteTask(index);
                 } else {
                     doobert.store(task, input);
                 }
@@ -86,32 +90,27 @@ public class Doobert {
 
 
     public void store(Task task, String description) {
-        if (currentIndex < listOfItems.length) {
-            listOfItems[currentIndex] = task ;
-            currentIndex++;
-            System.out.println("   ____________________________________________________________\n" +
-                    "     Got it. I've added this task:\n" + "      " + task.toString() + "\n" +
-            "     Now you have " + currentIndex + " tasks in your list.\n" +
-                    "   ____________________________________________________________");
-        } else {
-            System.out.println("List is full.");
-        }
+        listOfItems.add(task);
+        System.out.println("   ____________________________________________________________\n" +
+                "     Got it. I've added this task:\n" + "      " + task.toString() + "\n" +
+            "     Now you have " + listOfItems.size() + " tasks in your list.\n" +
+                "   ____________________________________________________________");
     }
 
     public void printList() {
         System.out.println("   ____________________________________________________________\n" +
                 "   Here are the tasks in your list: " );
-        for (int i = 0; i < currentIndex; i++) {
-            Task task = listOfItems[i];
+        for (int i = 0; i < listOfItems.size(); i++) {
+            Task task = listOfItems.get(i);
             System.out.println("   " + (i + 1) + "." + task);
         }
         System.out.println("   ____________________________________________________________");
     }
 
     public void markTask(int index) {
-        if (index >= 0 && index < currentIndex) {
+        if (index >= 0 && index < listOfItems.size()) {
             System.out.println("   ____________________________________________________________\n" +
-                    listOfItems[index].markAsDone() +
+                    listOfItems.get(index).markAsDone() +
                     "   ____________________________________________________________\n");
         } else {
             System.out.println("Invalid task number.");
@@ -119,12 +118,25 @@ public class Doobert {
     }
 
     public void unmarkTask(int index) {
-        if (index >= 0 && index < currentIndex) {
+        if (index >= 0 && index < listOfItems.size()) {
             System.out.println("   ____________________________________________________________\n" +
-                    listOfItems[index].markAsUndone() +
+                    listOfItems.get(index).markAsUndone() +
                     "   ____________________________________________________________\n");
         } else {
             System.out.println("Invalid task number.");
+        }
+    }
+
+    public void deleteTask(int index) {
+        if (index >= 0 && index < listOfItems.size()) {
+            Task removedTask = listOfItems.remove(index); // Remove task from the list
+            System.out.println("   ____________________________________________________________");
+            System.out.println("     Noted. I've removed this task:");
+            System.out.println("     " + removedTask);
+            System.out.println("     Now you have " + listOfItems.size() + " task(s) in the list.");
+            System.out.println("   ____________________________________________________________");
+        } else {
+            System.out.println("Invalid task number to delete.");
         }
     }
 

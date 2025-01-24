@@ -32,4 +32,10 @@ public class DoobertException extends Exception {
             throw new DoobertException("Invalid event format. Use: event <description> /from <start> /to <end>");
         }
     }
+
+    public static void validateDeleteCommand(String[] parts) throws DoobertException {
+        if (parts.length != 2 || !parts[1].matches("\\d+")) {
+            throw new DoobertException("Invalid delete command. Use: delete <task_number>");
+        }
+    }
 }

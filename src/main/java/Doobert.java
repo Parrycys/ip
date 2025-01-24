@@ -19,41 +19,45 @@ public class Doobert {
 
 
         while(!exit) {
-            String input = reader.readLine();
-            Task task = new Task(input);
+            try {
+                String input = reader.readLine();
+                Task task = new Task(input);
                 if (input.equals("list")) {
                     doobert.printList();
                 } else if (input.equals("blah")) {
-                    writer.print("   ____________________________________________________________\n" +
-                            "   blah\n" +
-                            "   ____________________________________________________________\n");
+                    throw new DoobertException("Sorry, I do not understand that.");
                 } else if (input.equals("bye")) {
                     writer.print("   ____________________________________________________________\n" +
                             "   Bye. Hope to see you again soon!\n" +
                             "   ____________________________________________________________\n");
                     exit = true;
                 } else if (input.startsWith("mark")) {
+                    String[] parts = input.split(" ");
+                    DoobertException.validateMarkCommand(parts);
                     int index = Integer.parseInt(input.split(" ")[1]) - 1;
                     doobert.markTask(index);
                 } else if (input.startsWith("unmark")) {
+                    String[] parts = input.split(" ");
+                    DoobertException.validateUnmarkCommand(parts);
                     int index = Integer.parseInt(input.split(" ")[1]) - 1;
                     doobert.unmarkTask(index);
                 } else if (input.startsWith("todo")) {
-                    String description = input.substring(5);
+                    String description = input.substring(4).trim();
+                    DoobertException.validateTodoDescription(description);
                     Todo todoTask = new Todo(description);
                     doobert.store(todoTask, description);
                 } else if (input.startsWith("deadline")) {
-                    String[] fullDesc = input.substring(9).split("/by");
-                    if (fullDesc.length == 2) {
-                        String description = fullDesc[0].trim(); // Extract description
-                        String by = fullDesc[1].trim(); // Extract by (deadline)
-                        Deadline deadlineTask = new Deadline(description, by);
-                        doobert.store(deadlineTask, description);
-                    } else {
-                        System.out.println("Invalid deadline format. Use: deadline <description> /by <deadline>");
-                    }
+                    String[] fullDesc = input.substring(8).split("/by");
+                    DoobertException.validateDeadlineCommand(fullDesc);
+                    String description = fullDesc[0].trim(); // Extract description
+                    String by = fullDesc[1].trim(); // Extract by (deadline)
+                    Deadline deadlineTask = new Deadline(description, by);
+                    doobert.store(deadlineTask, description);
                 } else if (input.startsWith("event")) {
-                    String[] parts = input.substring(6).split("/from");
+                    String[] parts = input.substring(5).split("/from");
+                    if (parts.length != 2) {
+                        DoobertException.validateEventCommand(parts);
+                    }
                     if (parts.length == 2) {
                         String description = parts[0].trim(); // Extract description
                         String[] timeParts = parts[1].split(" /to "); // Split /from part into from and to
@@ -63,21 +67,20 @@ public class Doobert {
                             Event eventTask = new Event(description, from, to); // Create Event object
                             doobert.store(eventTask, description);
                         } else {
-                            System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
+                            DoobertException.validateEventCommand(timeParts);
                         }
-                    } else {
-                        System.out.println("Invalid event format. Use: event <description> /from <start> /to <end>");
                     }
                 } else {
                     doobert.store(task, input);
                 }
 
-
+            } catch (DoobertException e) {
+                System.out.println("   ____________________________________________________________");
+                System.out.println("   Error: " + e.getMessage());
+                System.out.println("   ____________________________________________________________");
+            }
 
         }
-
-
-
         writer.flush();
     }
 

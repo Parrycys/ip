@@ -1,3 +1,5 @@
+import java.io.File;
+
 public class DoobertException extends Exception {
     public DoobertException(String message) {
         super(message);
@@ -37,5 +39,9 @@ public class DoobertException extends Exception {
         if (parts.length != 2 || !parts[1].matches("\\d+")) {
             throw new DoobertException("Invalid delete command. Use: delete <task_number>");
         }
+    }
+
+    public static void fileNotFound(File filePath) throws DoobertException {
+        throw new DoobertException(filePath + " File not found.");
     }
 }

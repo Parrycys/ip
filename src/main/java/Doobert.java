@@ -1,5 +1,7 @@
 import java.util.*;
 import java.io.*;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public class Doobert {
     private static final String FILE_PATH = "./data/doobert.txt";
@@ -192,8 +194,12 @@ public class Doobert {
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
-                Task task = Task.fromFileString(line.trim());
-                listOfItems.add(task);
+                try {
+                    Task task = Task.fromFileString(line.trim());
+                    listOfItems.add(task);
+                } catch (IllegalArgumentException e) {
+                    System.out.println("Skipping invalid task format: " + line);
+                }
             }
         } catch (IOException e) {
             System.out.println("Error loading tasks: " + e.getMessage());

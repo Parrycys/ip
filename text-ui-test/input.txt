@@ -30,3 +30,12 @@ list
 mark 3
 delete 3
 list
+deadline return book /by 2/12/2019 1800
+deadline return book /by 2/12/2019 800
+deadline return book /by 22/12/2019 1800
+deadline return book /by 2019-10-15
+deadline return book /by 2019-1-1
+event project meeting /from 2019-12-22 1400 /to 1600
+event office hours /from Mon 2pm /to 4pm
+event office /from Mon 2pm /to 4pm
+event project meeting /from 2019-12-22 1400 /to 1600

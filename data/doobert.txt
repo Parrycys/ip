@@ -1,2 +1,9 @@
-    D | 1 | return book | Sunday
-    E | 0 | project meeting | Mon 2pm-4pm
+    D | 0 | return book | Dec 02 2019 0800
+    D | 0 | return book | Dec 02 2019 1800
+    D | 0 | return book | Dec 22 2019 1800
+    D | 0 | return book | Oct 15 2019
+    D | 0 | return book | Jan 01 2019
+    E | 0 | project meeting | Dec 22 2019 1400-1600
+    E | 0 | office hours | Mon 2pm-4pm
+    E | 0 | office | Mon 2pm-4pm
+    E | 0 | project meeting | Dec 22 2019 1400-1600

@@ -18,10 +18,9 @@ public class Event extends Task {
         DateTimeFormatter formatterEvent = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // e.g., Dec 22 2019 1400
 
         try {
-            if (from.matches("\\d{4}-\\d{2}-\\d{2} \\d{3,4}")) {
+            if (from.matches("\\d{4}-\\d{1,2}-\\d{1,2} \\d{3,4}")) {
                 // Convert "yyyy-MM-dd HHmm" → "MMM dd yyyy HHmm"
-                System.out.println(from);
-                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
+                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-M-d HHmm");
                 LocalDateTime parsedDateTime = LocalDateTime.parse(from, inputFormatter);
                 this.from = parsedDateTime.format(formatterEvent);
             } else if (from.matches("[A-Za-z]{3} \\d{2} \\d{4} \\d{3,4}")) {

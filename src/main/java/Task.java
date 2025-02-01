@@ -21,7 +21,7 @@ public abstract class Task {
     public String markAsDone() {
         if (!isDone) {
             isDone = true;
-            return "   Nice! I've marked this task as done: \n" + "   [X] " + description + "\n";
+            return "Nice! I've marked this task as done: \n" + "   [X] " + description;
         }
         return "    This task is already marked as done.\n";
     }
@@ -29,7 +29,7 @@ public abstract class Task {
     public String markAsUndone() {
         if (isDone) {
             isDone = false;
-            return "   OK, I've marked this task as not done yet: \n" + "   [ ] " + description + "\n";
+            return "OK, I've marked this task as not done yet: \n" + "   [ ] " + description;
         }
         return "    This task is already marked as not done.\n";
     }

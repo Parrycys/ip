@@ -1,9 +1,11 @@
-    D | 0 | return book | Dec 02 2019 0800
+    T | 0 | borrow book
+    D | 1 | return book | Feb 02 2025
     D | 0 | return book | Dec 02 2019 1800
+    D | 0 | return book | Dec 02 2019 0800
     D | 0 | return book | Dec 22 2019 1800
     D | 0 | return book | Oct 15 2019
     D | 0 | return book | Jan 01 2019
     E | 0 | project meeting | Dec 22 2019 1400-1600
     E | 0 | office hours | Mon 2pm-4pm
     E | 0 | office | Mon 2pm-4pm
-    E | 0 | project meeting | Dec 22 2019 1400-1600
+    E | 0 | project meeting | Jan 02 2019 1400-1600

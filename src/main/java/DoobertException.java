@@ -5,15 +5,20 @@ public class DoobertException extends Exception {
         super(message);
     }
 
-    public static void validateMarkCommand(String[] parts) throws DoobertException {
+    /*public static void validateMarkCommand(String[] parts) throws DoobertException {
         if (parts.length != 2 || !parts[1].matches("\\d+")) {
             throw new DoobertException("Invalid mark command. Use: mark <task_number>");
         }
+    }*/
+    public static void validateMarkCommand(int index, int taskListSize) throws DoobertException {
+        if (index < 0 || index >= taskListSize) {
+            throw new DoobertException("Invalid task number. No such task exists.");
+        }
     }
 
-    public static void validateUnmarkCommand(String[] parts) throws DoobertException {
-        if (parts.length != 2 || !parts[1].matches("\\d+")) {
-            throw new DoobertException("Invalid unmark command. Use: unmark <task_number>");
+    public static void validateUnmarkCommand(int index, int taskListSize) throws DoobertException {
+        if (index < 0 || index >= taskListSize) {
+            throw new DoobertException("Invalid task number. No such task exists.");
         }
     }
 
@@ -30,14 +35,16 @@ public class DoobertException extends Exception {
     }
 
     public static void validateEventCommand(String[] timeParts) throws DoobertException {
-        if (timeParts.length != 2) {
+        if (timeParts.length != 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
             throw new DoobertException("Invalid event format. Use: event <description> /from <start> /to <end>");
         }
     }
 
-    public static void validateDeleteCommand(String[] parts) throws DoobertException {
-        if (parts.length != 2 || !parts[1].matches("\\d+")) {
-            throw new DoobertException("Invalid delete command. Use: delete <task_number>");
+
+    // Factory method for delete validation
+    public static void validateDeleteCommand(int index, int taskListSize) throws DoobertException {
+        if (index < 0 || index >= taskListSize) {
+            throw new DoobertException("Invalid task number. No such task exists.");
         }
     }
 

@@ -38,4 +38,4 @@ deadline return book /by 2019-1-1
 event project meeting /from 2019-12-22 1400 /to 1600
 event office hours /from Mon 2pm /to 4pm
 event office /from Mon 2pm /to 4pm
-event project meeting /from 2019-12-22 1400 /to 1600
+event project meeting /from 2019-1-2 1400 /to 1600

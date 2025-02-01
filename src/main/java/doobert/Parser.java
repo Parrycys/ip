@@ -1,3 +1,5 @@
+package doobert;
+
 public class Parser {
     public Command parse(String input) throws DoobertException {
         String[] parts = input.split(" ", 2);

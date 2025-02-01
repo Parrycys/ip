@@ -1,3 +1,4 @@
+package doobert;
 import java.io.File;
 
 public class DoobertException extends Exception {

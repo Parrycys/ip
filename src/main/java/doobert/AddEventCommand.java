@@ -1,3 +1,5 @@
+package doobert;
+
 public class AddEventCommand extends Command {
 
     private String description;

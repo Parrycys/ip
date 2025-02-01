@@ -1,3 +1,5 @@
+package doobert;
+
 public class MarkCommand extends Command {
     private int index;
 

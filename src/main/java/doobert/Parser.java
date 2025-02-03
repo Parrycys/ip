@@ -35,6 +35,8 @@ public class Parser {
             return new MarkCommand(arguments);
         case "unmark":
             return new UnmarkCommand(arguments);
+        case "find":
+            return new FindCommand(arguments);
         default:
             throw new DoobertException("Sorry, I do not understand that.");
         }

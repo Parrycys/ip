@@ -30,12 +30,13 @@ test {
 }
 
 application {
-    mainClass.set("doobert.Duke")
+    mainClass.set("doobert.Doobert")
 }
 
 shadowJar {
-    archiveBaseName = "duke"
+    archiveBaseName = "doobert"
     archiveClassifier = null
+    archiveFileName = 'doobert.jar'
 }
 
 run{

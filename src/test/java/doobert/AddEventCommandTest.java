@@ -81,8 +81,9 @@ public class AddEventCommandTest {
             fail();
             // the test should not reach this line
         } catch (DoobertException e) {
-            assertEquals("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
-                    "or a weekday name like 'Sunday'. /to <end>", e.getMessage());
+            assertEquals("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm',"
+                    + " 'yyyy-MM-dd', "
+                    + "or a weekday name like 'Sunday'. /to <end>", e.getMessage());
         }
     }
 
@@ -93,7 +94,8 @@ public class AddEventCommandTest {
             Ui ui = mock(Ui.class);
             Storage storage = mock(Storage.class);
             // From time is after to time (Invalid format)
-            AddEventCommand command = new AddEventCommand("event project meeting /from 2019-12-22 1600 /to 1300");
+            AddEventCommand command = new AddEventCommand("event project meeting /from "
+                    + "2019-12-22 1600 /to 1300");
             command.execute(taskList, ui, storage);
             fail(); // Debugging: If reached, no exception was thrown
 
@@ -111,8 +113,9 @@ public class AddEventCommandTest {
             fail(); // Debugging: If reached, no exception was thrown
 
         } catch (DoobertException e) {
-            assertEquals("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
-                    "or a weekday name like 'Sunday'. /to <end>", e.getMessage());
+            assertEquals("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm', "
+                    + "'yyyy-MM-dd', "
+                    + "or a weekday name like 'Sunday'. /to <end>", e.getMessage());
         }
     }
 }

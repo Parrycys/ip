@@ -84,8 +84,8 @@ public class AddDeadlineCommandTest {
             fail();
             // the test should not reach this line
         } catch (IllegalArgumentException e) {
-            assertEquals("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
-                    "or a weekday name like 'Sunday'.", e.getMessage());
+            assertEquals("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', "
+                    + "or a weekday name like 'Sunday'.", e.getMessage());
         }
     }
 
@@ -97,7 +97,8 @@ public class AddDeadlineCommandTest {
             fail(); // Debugging: If reached, no exception was thrown
 
         } catch (DoobertException e) {
-            assertEquals("Invalid deadline task format. Use: deadline <description> /by <deadline>", e.getMessage());
+            assertEquals("Invalid deadline task format. Use: deadline <description> /by "
+                    + "<deadline>", e.getMessage());
         }
     }
 
@@ -109,7 +110,8 @@ public class AddDeadlineCommandTest {
             fail(); // Debugging: If reached, no exception was thrown
 
         } catch (DoobertException e) {
-            assertEquals("Invalid deadline task format. Use: deadline <description> /by <deadline>", e.getMessage());
+            assertEquals("Invalid deadline task format. Use: deadline <description> /by "
+                    + "<deadline>", e.getMessage());
         }
     }
 

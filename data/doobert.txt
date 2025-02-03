@@ -3,3 +3,4 @@
     E | 0 | project meeting | Dec 22 2019 0400 - 0600
     E | 0 | project meeting | Dec 22 2019 1400 - 1600
     E | 0 | project meeting | Dec 22 2019 0400 - 0600
+    T | 0 | buy book

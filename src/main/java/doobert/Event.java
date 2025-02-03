@@ -1,12 +1,25 @@
 package doobert;
+
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
+/**
+ * Represents an event task with a start time ("from") and an end time ("to").
+ * This class extends {@code Task} and includes date-time validation.
+ */
 public class Event extends Task {
     protected LocalDateTime fromDateTime;
     protected LocalDateTime toDateTime;
 
+    /**
+     * Constructs an {@code Event} object with a description and a time range.
+     *
+     * @param description The description of the event.
+     * @param from        The start date and time in a supported format.
+     * @param to          The end time (only HHmm format is accepted).
+     * @throws DoobertException If the date/time format is invalid or if {@code from} is after {@code to}.
+     */
     public Event(String description, String from, String to) throws DoobertException {
         super(description);
 
@@ -50,24 +63,32 @@ public class Event extends Task {
     }
 
 
-
-
-
-
+    /**
+     * Returns a string representation of the event task for display.
+     *
+     * @return A formatted string with event details.
+     */
     @Override
     public String toString() {
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
-        return "[E] [" + getStatusIcon() + "] " + description + " (from: " +
-                fromDateTime.format(outputFormatter) + " - " + toDateTime.format(DateTimeFormatter.ofPattern("h:mm a")) + ")";
+        return "[E] [" + getStatusIcon() + "] " + description + " (from: "
+                + fromDateTime.format(outputFormatter) + " - "
+                + toDateTime.format(DateTimeFormatter.ofPattern("h:mm a")) + ")";
     }
 
+    /**
+     * Returns a string representation of the event task formatted for file storage.
+     *
+     * @return A string formatted for saving content to a file.
+     */
     @Override
     public String toFileString() {
         DateTimeFormatter fileFormatterWithDate = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
         DateTimeFormatter fileFormatterTimeOnly = DateTimeFormatter.ofPattern("HHmm");
 
-        return "    E | " + (isDone ? "1" : "0") + " | " + description + " | " +
-                fromDateTime.format(fileFormatterWithDate) + " - " + toDateTime.format(fileFormatterTimeOnly);
+        return "    E | " + (isDone ? "1" : "0") + " | " + description + " | "
+                + fromDateTime.format(fileFormatterWithDate) + " - "
+                + toDateTime.format(fileFormatterTimeOnly);
     }
 
 

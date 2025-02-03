@@ -9,11 +9,6 @@ public class DoobertException extends Exception {
         super(message);
     }
 
-    /*public static void validateMarkCommand(String[] parts) throws DoobertException {
-        if (parts.length != 2 || !parts[1].matches("\\d+")) {
-            throw new DoobertException("Invalid mark command. Use: mark <task_number>");
-        }
-    }*/
     public static void validateMarkCommand(int index, int taskListSize) throws DoobertException {
         if (index < 0 || index >= taskListSize) {
             throw new DoobertException("Invalid task number. No such task exists.");
@@ -52,12 +47,14 @@ public class DoobertException extends Exception {
     public static void validateEventCommand(String[] timeParts) throws DoobertException {
         // Check if the description is empty
         if (timeParts[0].trim().isEmpty() || timeParts[0].trim().equalsIgnoreCase("event")) {
-            throw new DoobertException("Invalid event format: Description cannot be empty. Use 'event <description> /from <start> /to <end>'.");
+            throw new DoobertException("Invalid event format: Description cannot be empty. " +
+                    "Use 'event <description> /from <start> /to <end>'.");
         }
 
         if (timeParts.length != 2 || timeParts[1].trim().isEmpty()) {
-            throw new DoobertException("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
-                    "or a weekday name like 'Sunday'. /to <end>");
+            throw new DoobertException("Invalid event format: Use <description> /from <time format of:> '"
+                    + "d/M/yyyy HHmm', 'yyyy-MM-dd', "
+                    + "or a weekday name like 'Sunday'. /to <end>");
         }
 
 
@@ -65,12 +62,11 @@ public class DoobertException extends Exception {
 
     public static void validateEventTime(LocalDateTime from, LocalDateTime to) throws DoobertException {
         if (from.isAfter(to)) {
-            throw new DoobertException("Invalid event time: The start time ('from') cannot be after the end time ('to').");
+            throw new DoobertException("Invalid event time: The start time ('from') cannot be after "
+                    + "the end time ('to').");
         }
     }
 
-
-    // Factory method for delete validation
     public static void validateDeleteCommand(int index, int taskListSize) throws DoobertException {
         if (index < 0 || index >= taskListSize) {
             throw new DoobertException("Invalid task number. No such task exists.");

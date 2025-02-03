@@ -1,57 +1,74 @@
 package doobert;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 
 public class Event extends Task {
-    protected String from;
-    protected String to;
     protected LocalDateTime fromDateTime;
-    protected LocalDate fromDate; // Store separately for date-only formats
+    protected LocalDateTime toDateTime;
 
-    public Event(String description, String from, String to) {
+    public Event(String description, String from, String to) throws DoobertException {
         super(description);
 
         // Define formatters
-        DateTimeFormatter formatterWithTime = DateTimeFormatter.ofPattern("d/M/uuuu HHmm"); // e.g., 2/12/2019 1800
-        DateTimeFormatter formatterDateOnly = DateTimeFormatter.ofPattern("yyyy-M-d"); // e.g., 2019-10-15
-        DateTimeFormatter formatterEvent = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // e.g., Dec 22 2019 1400
+        DateTimeFormatter inputFormatter1 = DateTimeFormatter.ofPattern("yyyy-M-d Hmm");  // e.g., 2019-1-2 0500
+        DateTimeFormatter inputFormatter2 = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // e.g., Jan 02 2019 1400
+        DateTimeFormatter inputFormatter3 = DateTimeFormatter.ofPattern("yyyy/M/d Hmm");
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // Standard output format
 
         try {
-            if (from.matches("\\d{4}-\\d{1,2}-\\d{1,2} \\d{3,4}")) {
-                // Convert "yyyy-MM-dd HHmm" → "MMM dd yyyy HHmm"
-                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-M-d HHmm");
-                LocalDateTime parsedDateTime = LocalDateTime.parse(from, inputFormatter);
-                this.from = parsedDateTime.format(formatterEvent);
-            } else if (from.matches("[A-Za-z]{3} \\d{2} \\d{4} \\d{3,4}")) {
-                // Already in "MMM dd yyyy HHmm" format, keep it as is
-                this.from = from;
-            } else {
-                // Assume "Mon 2pm" format and store as-is
-                this.from = from;
-            }
+            System.out.println("DEBUG: Creating Event with:");
+            System.out.println(" - description -> " + description);
+            System.out.println(" - from -> " + from);
+            System.out.println(" - to -> " + to);
 
-            // Process 'to' time
-            if (to.matches("\\d{3,4}")) {
-                // Ensure time is always four digits (e.g., "800" -> "0800")
-                if (to.length() == 3) {
-                    to = "0" + to;
+            // Try parsing with the first format
+            try {
+                this.fromDateTime = LocalDateTime.parse(from, inputFormatter1);
+            } catch (DateTimeParseException e1) {
+                // If inputFormatter1 fails, try inputFormatter2
+                try {
+                    this.fromDateTime = LocalDateTime.parse(from, inputFormatter2);
+                } catch (DateTimeParseException e2) {
+                    // If inputFormatter2 fails, try inputFormatter3
+                    this.fromDateTime = LocalDateTime.parse(from, inputFormatter3);
                 }
             }
-            this.to = to;
+
+            // Ensure `to` is 4-digit format (e.g., "500" -> "0500")
+            if (to.length() == 3) {
+                to = "0" + to;
+            }
+            int hour = Integer.parseInt(to.substring(0, 2));
+            int minute = Integer.parseInt(to.substring(2));
+
+            this.toDateTime = this.fromDateTime.withHour(hour).withMinute(minute);
+            DoobertException.validateEventTime(this.fromDateTime, this.toDateTime);
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid event format: '" + from + "'. Use 'Mon 2pm' or 'yyyy-MM-dd HHmm'");
+            throw new IllegalArgumentException("ERROR: Failed to parse Event date/time -> " + e.getMessage());
         }
     }
 
+
+
+
+
+
     @Override
     public String toString() {
-        return "[E] [" + getStatusIcon() + "] " + description + " (from: " + from + "-" + to + ")";
+        DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy, h:mm a");
+        return "[E] [" + getStatusIcon() + "] " + description + " (from: " +
+                fromDateTime.format(outputFormatter) + " - " + toDateTime.format(DateTimeFormatter.ofPattern("h:mm a")) + ")";
     }
 
     @Override
     public String toFileString() {
-        return "    E | " + (isDone ? "1" : "0") + " | " + description + " | " + from + "-" + to;
+        DateTimeFormatter fileFormatterWithDate = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
+        DateTimeFormatter fileFormatterTimeOnly = DateTimeFormatter.ofPattern("HHmm");
+
+        return "    E | " + (isDone ? "1" : "0") + " | " + description + " | " +
+                fromDateTime.format(fileFormatterWithDate) + " - " + toDateTime.format(fileFormatterTimeOnly);
     }
+
+
 }

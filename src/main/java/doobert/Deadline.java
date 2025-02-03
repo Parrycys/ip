@@ -16,6 +16,7 @@ public class Deadline extends Task {
         // Define formatters
         DateTimeFormatter formatterWithTime = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
         DateTimeFormatter formatterDateOnly = DateTimeFormatter.ofPattern("yyyy-M-d");
+        DateTimeFormatter formatterWithTimeForDash = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
 
         try {
             // Handle full date + time
@@ -29,7 +30,15 @@ public class Deadline extends Task {
                 }
 
                 this.byDateTime = LocalDateTime.parse(datePart + " " + timePart, formatterWithTime);
-            }
+            } else if (by.matches("\\d{1,2}-\\d{1,2}-\\d{4} \\d{4}")) {
+                    try {
+                        //System.out.println("DEBUG: Trying to parse -> " + by); // Debugging Line
+                        this.byDateTime = LocalDateTime.parse(by, formatterWithTimeForDash);
+                    } catch (DateTimeParseException e) {
+                        throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
+                                "or a weekday name like 'Sunday'.");
+                    }
+                }
             // Handle numeric date-only input
             else if (by.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) {
                 this.byDate = LocalDate.parse(by, formatterDateOnly);
@@ -39,7 +48,8 @@ public class Deadline extends Task {
                 this.byDate = getNextDayOfWeek(by);
             }
         } catch (DateTimeParseException e) {
-            throw new IllegalArgumentException("Invalid deadline format: '" + by + "'. Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', or a weekday name like 'Sunday'.");
+            throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
+                    "or a weekday name like 'Sunday'.");
         }
     }
 
@@ -51,7 +61,8 @@ public class Deadline extends Task {
             int daysUntilNext = (targetDay.getValue() - today.getDayOfWeek().getValue() + 7) % 7;
             return today.plusDays(daysUntilNext == 0 ? 7 : daysUntilNext); // If today is the day, move to next week
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid day name: '" + dayName + "'. Use full names like 'Sunday'.");
+            throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
+                    "or a weekday name like 'Sunday'.");
         }
     }
 

@@ -22,6 +22,7 @@ public class Storage {
                 try {
                     Task task = Task.fromFileString(line.trim());
                     listOfItems.add(task);
+                    System.out.println("DEBUG: Added task to list!");
                 } catch (IllegalArgumentException e) {
                     System.out.println("Skipping invalid task format: " + line);
                 }

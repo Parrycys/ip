@@ -18,7 +18,7 @@ public class AddEventCommand extends Command {
 
 
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         Event eventTask = new Event(description, from, to);
         tasks.addTask(eventTask);
         storage.saveTask(tasks);

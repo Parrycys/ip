@@ -1,5 +1,8 @@
 package doobert;
 import java.io.File;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class DoobertException extends Exception {
     public DoobertException(String message) {
@@ -30,14 +33,39 @@ public class DoobertException extends Exception {
     }
 
     public static void validateDeadlineCommand(String[] parts) throws DoobertException {
-        if (parts.length != 2) {
+        // Ensure "/by" and deadline exist
+        if (parts.length < 2 || parts[1].trim().isEmpty()) {
+            //System.out.println("DEBUG: Throwing missing /by or deadline error");
             throw new DoobertException("Invalid deadline task format. Use: deadline <description> /by <deadline>");
         }
+
+        // NEW: Ensure the description is not just empty spaces
+        if (parts[0].trim().isEmpty() || parts[0].trim().equalsIgnoreCase("deadline")) {
+            //System.out.println("DEBUG: Throwing missing description error");
+            throw new DoobertException("Invalid deadline task format. Use: deadline <description> /by <deadline>");
+        }
+
+        // System.out.println("DEBUG: Validation passed!");
     }
 
+
     public static void validateEventCommand(String[] timeParts) throws DoobertException {
-        if (timeParts.length != 2 || timeParts[0].trim().isEmpty() || timeParts[1].trim().isEmpty()) {
-            throw new DoobertException("Invalid event format. Use: event <description> /from <start> /to <end>");
+        // Check if the description is empty
+        if (timeParts[0].trim().isEmpty() || timeParts[0].trim().equalsIgnoreCase("event")) {
+            throw new DoobertException("Invalid event format: Description cannot be empty. Use 'event <description> /from <start> /to <end>'.");
+        }
+
+        if (timeParts.length != 2 || timeParts[1].trim().isEmpty()) {
+            throw new DoobertException("Invalid event format: Use <description> /from <time format of:> 'd/M/yyyy HHmm', 'yyyy-MM-dd', " +
+                    "or a weekday name like 'Sunday'. /to <end>");
+        }
+
+
+    }
+
+    public static void validateEventTime(LocalDateTime from, LocalDateTime to) throws DoobertException {
+        if (from.isAfter(to)) {
+            throw new DoobertException("Invalid event time: The start time ('from') cannot be after the end time ('to').");
         }
     }
 

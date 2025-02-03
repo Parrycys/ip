@@ -39,7 +39,7 @@ public abstract class Task {
     public abstract String toFileString();
 
     // Converts file string back to Task (Static Factory Method)
-    public static Task fromFileString(String fileString) {
+    public static Task fromFileString(String fileString) throws DoobertException {
         String[] parts = fileString.split("\\s*\\|\\s*"); // Fix: Properly split parts
 
         if (parts.length < 3) { // Ensure minimum parts exist
@@ -97,44 +97,126 @@ public abstract class Task {
                 } catch (DateTimeParseException e) {
                     throw new IllegalArgumentException("Error parsing deadline: " + by);
                 }
-            case "E": // Event Task (Handles both "Mon 2pm-4pm" and "yyyy-MM-dd HHmm")
+            case "E": // Event Task
+                System.out.println("DEBUG: Trying to parse event -> " + fileString);
+
+                // Ensure correct splitting
                 if (parts.length < 4) {
                     throw new IllegalArgumentException("Invalid Event format: " + fileString);
                 }
-                String duration = parts[3].trim();
-                if (duration.endsWith("-")) {
-                    duration = duration.substring(0, duration.length() - 1);
-                }
-                int lastDashIndex = duration.lastIndexOf("-");
 
-                String from = duration.substring(0, lastDashIndex).trim(); // Extract everything before last "-"
-                String to = duration.substring(lastDashIndex + 1).trim();  // Extract everything after last "-"
+                String duration = parts[3].trim();  // Trim spaces
+                int lastDashIndex = duration.lastIndexOf("-");
+                if (lastDashIndex == -1) {
+                    throw new IllegalArgumentException("Invalid Event format (missing '-'): " + fileString);
+                }
+
+                // ✅ Fix: Remove extra spaces around `from` and `to`
+                String from = duration.substring(0, lastDashIndex).trim();
+                String to = duration.substring(lastDashIndex + 1).trim();
+
+                // ✅ Fix: Trim again just in case
+                from = from.replaceAll("\\s+", " ");
+                to = to.replaceAll("\\s+", ""); // Extract after last "-"
+
+                System.out.println("DEBUG: Extracted from -> " + from);
+                System.out.println("DEBUG: Extracted to -> " + to);
 
                 // Define formatters
-                DateTimeFormatter inputFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HHmm");
-                DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
+                DateTimeFormatter fileFormatterWithDate = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // Matches file format
+                DateTimeFormatter outputFormatterTimeOnly = DateTimeFormatter.ofPattern("HHmm"); // Only HHmm
 
-                // Convert "yyyy-MM-dd HHmm" to "MMM dd yyyy HHmm" if needed
-                if (from.matches("\\d{4}-\\d{2}-\\d{2} \\d{4}")) {
-                    String[] splitFrom = from.split(" ");
-                    String datePart = splitFrom[0].trim();
-                    String timePart = splitFrom[1].trim();
-                    // Ensure time is always four digits (e.g., "800" -> "0800")
-                    if (timePart.length() == 3) {
-                        timePart = "0" + timePart;
+                try {
+                    // ✅ Convert "MMM dd yyyy HHmm" → LocalDateTime
+                    LocalDateTime fromDateTime = LocalDateTime.parse(from, fileFormatterWithDate);
+                    System.out.println("DEBUG: Extracted from -> " + fromDateTime);
+                    // ✅ Convert `to` time correctly
+                    if (to.length() == 3) {
+                        to = "0" + to; // Convert "500" -> "0500"
                     }
-                    LocalDateTime parsedFrom = LocalDateTime.parse(datePart + " " + timePart, inputFormatter);
-                    from = parsedFrom.format(outputFormatter);
+                    LocalDateTime toDateTime = fromDateTime.withHour(Integer.parseInt(to.substring(0, 2)))
+                            .withMinute(Integer.parseInt(to.substring(2)));
+                    System.out.println("DEBUG: Extracted to -> " + toDateTime);
+                    if (fromDateTime.isAfter(toDateTime)) {
+                        throw new DoobertException("Invalid event time: The start time ('from') cannot be after the end time ('to').");
+                    }
+                    // ✅ Create Event Object
+                    Event event = new Event(description, fromDateTime.format(fileFormatterWithDate), toDateTime.format(outputFormatterTimeOnly));
+
+                    if (isDone) event.markAsDone();
+                    return event;
+                } catch (DateTimeParseException e) {
+                    throw new IllegalArgumentException("Error parsing event: " + fileString + " -> " + e.getMessage());
                 }
-                Event event = new Event(description, from, to);
-                if (isDone) event.markAsDone();
-                return event;
 
 
             default:
                 throw new IllegalArgumentException("Unknown task type in file: " + type);
         }
     }
+    /*public static Task fromFileString(String fileString) {
+        System.out.println("DEBUG: Trying to parse event -> " + fileString);
+
+        String[] parts = fileString.split("\\s*\\|\\s*"); // Fix: Properly split parts
+        System.out.println("DEBUG: Split parts -> " + Arrays.toString(parts));
+
+        if (parts.length < 4) {
+            throw new IllegalArgumentException("Invalid file format: " + fileString);
+        }
+
+        String type = parts[0].trim();
+        boolean isDone = parts[1].trim().equals("1");
+        String description = parts[2].trim();
+        String duration = parts[3].trim();
+
+        System.out.println("DEBUG: Extracted type -> " + type);
+        System.out.println("DEBUG: Extracted description -> " + description);
+        System.out.println("DEBUG: Extracted duration -> " + duration);
+
+        if (!type.equals("E")) {
+            throw new IllegalArgumentException("Skipping non-event task: " + fileString);
+        }
+
+        int lastDashIndex = duration.lastIndexOf("-");
+        if (lastDashIndex == -1) {
+            throw new IllegalArgumentException("Invalid Event format (missing '-'): " + fileString);
+        }
+
+        String from = duration.substring(0, lastDashIndex).trim();
+        String to = duration.substring(lastDashIndex + 1).trim();
+
+        System.out.println("DEBUG: Extracted from -> " + from);
+        System.out.println("DEBUG: Extracted to -> " + to);
+
+        try {
+            // Define formatter
+            DateTimeFormatter fileFormatterWithDate = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm");
+            DateTimeFormatter outputFormatterTimeOnly = DateTimeFormatter.ofPattern("HHmm");
+
+            // ✅ Fix: Trim potential extra whitespace
+            from = from.replaceAll("\\s+", " ");
+            to = to.replaceAll("\\s+", "");
+
+            LocalDateTime fromDateTime = LocalDateTime.parse(from, fileFormatterWithDate);
+
+            if (to.length() == 3) {
+                to = "0" + to; // Convert "500" -> "0500"
+            }
+            LocalDateTime toDateTime = fromDateTime.withHour(Integer.parseInt(to.substring(0, 2)))
+                    .withMinute(Integer.parseInt(to.substring(2)));
+
+            Event event = new Event(description, fromDateTime.format(fileFormatterWithDate), toDateTime.format(outputFormatterTimeOnly));
+
+            if (isDone) event.markAsDone();
+            System.out.println("DEBUG: Successfully parsed Event -> " + event.toFileString());
+            return event;
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("ERROR: Failed to parse Event: " + fileString + " -> " + e.getMessage());
+        }
+    }*/
+
+
+
 
 
 

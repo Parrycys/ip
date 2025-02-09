@@ -30,11 +30,6 @@ public class Event extends Task {
         DateTimeFormatter outputFormatter = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // Standard output format
 
         try {
-            System.out.println("DEBUG: Creating Event with:");
-            System.out.println(" - description -> " + description);
-            System.out.println(" - from -> " + from);
-            System.out.println(" - to -> " + to);
-
             // Try parsing with the first format
             try {
                 this.fromDateTime = LocalDateTime.parse(from, inputFormatter1);

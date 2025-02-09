@@ -25,18 +25,19 @@ public class AddTodoCommand extends Command {
      * @param ui      The user interface for displaying messages.
      * @param storage The storage handler for saving the updated task list.
      * @throws DoobertException If the description is empty or invalid.
+     * @return A string representation of the todo task added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException  {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException  {
         DoobertException.validateTodoDescription(description);
         Todo todoTask = new Todo(description);
         tasks.addTask(todoTask);
         storage.saveTask(tasks);
-        ui.showLine();
-        ui.showOutput("Got it. I've added this task: \n" + "      "
+
+        return  "Got it. I've added this task: \n" + "      "
                 + todoTask.toString() + "\n" + "   Now you have "
-                + tasks.getList().size() + " tasks in your list.");
-        ui.showLine();
+                + tasks.getList().size() + " tasks in your list.";
+
     }
 
 }

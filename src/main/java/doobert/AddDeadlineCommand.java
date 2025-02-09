@@ -34,16 +34,17 @@ public class AddDeadlineCommand extends Command {
      * @param tasks   The list of tasks to which the new deadline will be added.
      * @param ui      The user interface for displaying messages.
      * @param storage The storage handler for saving the updated task list.
+     * @return A string representation of the deadline task added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         Deadline deadline = new Deadline(description, by);
         tasks.addTask(deadline);
         storage.saveTask(tasks);
-        ui.showLine();
-        ui.showOutput("Got it. I've added this task:\n" + "   "
+
+        return  "Got it. I've added this task:\n" + "   "
                 + deadline + "\n   Now you have " + tasks.getList().size()
-                + " tasks in the list.");
-        ui.showLine();
+                + " tasks in the list.";
+
     }
 }

@@ -30,17 +30,12 @@ public class DoobertException extends Exception {
     public static void validateDeadlineCommand(String[] parts) throws DoobertException {
         // Ensure "/by" and deadline exist
         if (parts.length < 2 || parts[1].trim().isEmpty()) {
-            //System.out.println("DEBUG: Throwing missing /by or deadline error");
             throw new DoobertException("Invalid deadline task format. Use: deadline <description> /by <deadline>");
         }
 
-        // NEW: Ensure the description is not just empty spaces
         if (parts[0].trim().isEmpty() || parts[0].trim().equalsIgnoreCase("deadline")) {
-            //System.out.println("DEBUG: Throwing missing description error");
             throw new DoobertException("Invalid deadline task format. Use: deadline <description> /by <deadline>");
         }
-
-        // System.out.println("DEBUG: Validation passed!");
     }
 
 

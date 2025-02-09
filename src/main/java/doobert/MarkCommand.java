@@ -27,9 +27,10 @@ public class MarkCommand extends Command {
      * @param ui      The UI instance used to interact with the user.
      * @param storage The storage instance to save the updated task list.
      * @throws DoobertException If the task index is invalid.
+     * @return A string representation of the task marked.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         // Validate the index before marking
         DoobertException.validateMarkCommand(index, tasks.getList().size());
 
@@ -39,14 +40,12 @@ public class MarkCommand extends Command {
         // Mark the task as done and store the message
         String markMessage = task.markAsDone();
 
-        // Output without running the function again
-        ui.showLine();
-        tasks.markTask(index);
-        ui.showOutput(markMessage);
-        ui.showLine();
-
         // Save changes
         storage.saveTask(tasks);
+
+        // Output without running the function again
+        tasks.markTask(index);
+        return markMessage;
     }
 
 }

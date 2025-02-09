@@ -1,30 +1,32 @@
 package doobert;
 
+import javafx.application.Platform;
+import javafx.animation.PauseTransition;
+import javafx.util.Duration;
+
 /**
- * Represents the command to exit the application.
- * This command displays a farewell message and signals termination.
+ * Represents a command to exit the chatbot.
  */
 public class ExitCommand extends Command {
 
     /**
-     * Executes the exit command by displaying a farewell message.
+     * Executes the bye command, closing the application after displaying a message.
      *
-     * @param tasks   The current task list (not used in this command).
-     * @param ui      The UI instance to handle user interaction.
-     * @param storage The storage instance (not used in this command).
+     * @param tasks   The task list (not used here).
+     * @param ui      The UI instance (not used in JavaFX mode).
+     * @param storage The storage instance (not used here).
+     * @return A farewell message before exiting.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) {
-        ui.showLine();
-        ui.showOutput("Bye. Hope to see you again soon!");
-        ui.showLine();
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
+        // Schedule JavaFX to exit after a short delay
+        PauseTransition delay = new PauseTransition(Duration.seconds(2)); // 2-seconds delay
+        delay.setOnFinished(event -> Platform.exit()); // Exit JavaFX after delay
+        delay.play();
+
+        return "Goodbye! Hope to see you again soon!";
     }
 
-    /**
-     * Indicates that this command should terminate the chatbot application.
-     *
-     * @return {@code true}, signaling that the application should exit.
-     */
     @Override
     public boolean isExit() {
         return true;

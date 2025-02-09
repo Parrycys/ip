@@ -35,16 +35,17 @@ public class AddEventCommand extends Command {
      * @param ui      The user interface for displaying messages.
      * @param storage The storage handler for saving the updated task list.
      * @throws DoobertException If there is an issue with parsing event time.
+     * @return A string representation of the event task added.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         Event eventTask = new Event(description, from, to);
         tasks.addTask(eventTask);
         storage.saveTask(tasks);
-        ui.showLine();
-        ui.showOutput("Got it. I've added this task:\n" + "   "
+
+        return  "Got it. I've added this task:\n" + "   "
                 + eventTask + "\n   Now you have " + tasks.getList().size()
-                + " tasks in the list.");
-        ui.showLine();
+                + " tasks in the list.";
+
     }
 }

@@ -36,6 +36,10 @@ public abstract class Task {
         return "    This task is already marked as not done.\n";
     }
 
+    public String getDescription() {
+        return description;
+    }
+
     // Converts task to savable string format
     public abstract String toFileString();
 
@@ -73,7 +77,6 @@ public abstract class Task {
 
                 if (by.matches("[A-Za-z]{3} \\d{2} \\d{4} \\d{4}")) {
                     // Convert from "MMM dd yyyy HHmm" to "d/M/yyyy HHmm"
-                    // For debugging System.out.println("MATCHES!");
                     LocalDateTime parsedDateTime = LocalDateTime.parse(by, inputFormatter);
                     convertedBy = parsedDateTime.format(outputFormatter);
                     deadline = new Deadline(description, convertedBy);
@@ -98,8 +101,6 @@ public abstract class Task {
                 throw new IllegalArgumentException("Error parsing deadline: " + by);
             }
         case "E": // Event Task
-            System.out.println("DEBUG: Trying to parse event -> " + fileString);
-
             // Ensure correct splitting
             if (parts.length < 4) {
                 throw new IllegalArgumentException("Invalid Event format: " + fileString);
@@ -119,9 +120,6 @@ public abstract class Task {
             from = from.replaceAll("\\s+", " ");
             to = to.replaceAll("\\s+", ""); // Extract after last "-"
 
-            System.out.println("DEBUG: Extracted from -> " + from);
-            System.out.println("DEBUG: Extracted to -> " + to);
-
             // Define formatters
             DateTimeFormatter fileFormatterWithDate = DateTimeFormatter.ofPattern("MMM dd yyyy HHmm"); // Matches format
             DateTimeFormatter outputFormatterTimeOnly = DateTimeFormatter.ofPattern("HHmm"); // Only HHmm
@@ -129,14 +127,14 @@ public abstract class Task {
             try {
                 // Convert "MMM dd yyyy HHmm" → LocalDateTime
                 LocalDateTime fromDateTime = LocalDateTime.parse(from, fileFormatterWithDate);
-                System.out.println("DEBUG: Extracted from -> " + fromDateTime);
+
                 // Convert `to` time correctly
                 if (to.length() == 3) {
                     to = "0" + to; // Convert "500" -> "0500"
                 }
                 LocalDateTime toDateTime = fromDateTime.withHour(Integer.parseInt(to.substring(0, 2)))
                         .withMinute(Integer.parseInt(to.substring(2)));
-                System.out.println("DEBUG: Extracted to -> " + toDateTime);
+
                 if (fromDateTime.isAfter(toDateTime)) {
                     throw new DoobertException("Invalid event time: The start time ('from') cannot be "
                             + "after the end time ('to').");

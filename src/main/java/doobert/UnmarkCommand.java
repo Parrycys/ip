@@ -28,9 +28,10 @@ public class UnmarkCommand extends Command {
      * @param ui      The user interface for displaying messages.
      * @param storage The storage system for saving tasks.
      * @throws DoobertException If the task index is invalid.
+     * @return A string representation of the task unmarked.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         // Validate the index before deletion
         DoobertException.validateUnmarkCommand(index, tasks.getList().size());
 
@@ -40,14 +41,14 @@ public class UnmarkCommand extends Command {
         // Mark the task as undone and store the message
         String markMessage = task.markAsUndone();
 
-        // Output without running the function again
-        ui.showLine();
-        tasks.unmarkTask(index);
-        ui.showOutput(markMessage);
-        ui.showLine();
-
         // Save changes
         storage.saveTask(tasks);
+
+        // Output without running the function again
+        tasks.unmarkTask(index);
+        return markMessage;
+
+
     }
 
 }

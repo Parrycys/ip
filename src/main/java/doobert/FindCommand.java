@@ -1,6 +1,7 @@
 package doobert;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class FindCommand extends Command {
 
@@ -16,36 +17,32 @@ public class FindCommand extends Command {
     }
 
     /**
-     * Executes the find command, searching for tasks that contains the keyword.
+     * Executes the find command, searching for tasks that contain the keyword.
      *
      * @param tasks   The task list to search within.
-     * @param ui      The user interface to display messages.
+     * @param ui      The user interface (not used in JavaFX mode).
      * @param storage The storage system (not used in this command).
-     * @throws DoobertException If no tasks match the keyword.
+     * @return A string representation of the found tasks or a message if no matches are found.
      */
     @Override
-    public void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
+    public String execute(TaskList tasks, Ui ui, Storage storage) {
         List<Task> taskList = tasks.getList();
-        boolean found = false;
 
-        ui.showLine();
-        ui.showOutput("Here are the matching tasks in your list:");
+        // Filter tasks based on keyword
+        List<Task> matchingTasks = taskList.stream()
+                .filter(task -> task.getDescription().toLowerCase().contains(keyword))
+                .collect(Collectors.toList());
 
-        // Iterate through the task list and check for matching descriptions
-        int count = 1;
-        for (Task task : taskList) {
-            if (task.description.toLowerCase().contains(keyword)) {
-                ui.showOutput(count + ". " + task);
-                found = true;
-                count++;
-            }
+        if (matchingTasks.isEmpty()) {
+            return "No matching tasks found.";
         }
 
-        // If no matches found, inform the user
-        if (!found) {
-            ui.showOutput("No matching tasks found.");
+        // Format and return the matching tasks
+        StringBuilder response = new StringBuilder("Here are the matching tasks in your list:\n");
+        for (int i = 0; i < matchingTasks.size(); i++) {
+            response.append((i + 1)).append(". ").append(matchingTasks.get(i)).append("\n");
         }
 
-        ui.showLine();
+        return response.toString();
     }
 }

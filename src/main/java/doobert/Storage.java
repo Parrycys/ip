@@ -27,30 +27,32 @@ public class Storage {
     public List<Task> loadTasks() throws DoobertException {
         List<Task> listOfItems = new ArrayList<>();
         File file = new File(filePath);
+
         if (!file.exists()) {
-            DoobertException.fileNotFound(file);
+            throw new DoobertException("No previous tasks found.");
         }
+
+        StringBuilder response = new StringBuilder("Loaded tasks from file:\n");
+
         try (BufferedReader reader = new BufferedReader(new FileReader(file))) {
             String line;
             while ((line = reader.readLine()) != null) {
                 try {
                     Task task = Task.fromFileString(line.trim());
                     listOfItems.add(task);
-                    System.out.println("DEBUG: Added task to list!");
+                    response.append(task).append("\n"); // Append task to response
                 } catch (IllegalArgumentException e) {
                     System.out.println("Skipping invalid task format: " + line);
                 }
             }
-            System.out.println("   ____________________________________________________________");
-            System.out.println("    Loading tasks from saved file...");
-            for (Task task : listOfItems) {
-                System.out.println(task.toFileString());
-            }
         } catch (IOException e) {
-            System.out.println("Error loading tasks: " + e.getMessage());
+            throw new DoobertException("Error loading tasks: " + e.getMessage());
         }
+
+        // Return formatted string of loaded tasks
         return listOfItems;
     }
+
 
     /**
      * Saves the current task list to the file.

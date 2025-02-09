@@ -13,8 +13,9 @@ public abstract class Command {
      * @param ui      The user interface for displaying messages.
      * @param storage The storage handler for saving and loading tasks.
      * @throws DoobertException If there is an error while executing the command.
+     * @return A string representation based on the command given by user.
      */
-    public abstract void execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException;
+    public abstract String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException;
 
     /**
      * Determines whether the command is an exit command.

@@ -65,4 +65,34 @@ public class Doobert {
         new Doobert("./data/doobert.txt").run();
     }
 
+    public String getStartupMessage() {
+        if (tasks.getList().isEmpty()) {
+            return "Welcome to Doobert!\nYou have no saved tasks.";
+        }
+
+        StringBuilder response = new StringBuilder("Welcome to Doobert!\nHere are your saved tasks:\n");
+        for (int i = 0; i < tasks.getList().size(); i++) {
+            response.append((i + 1)).append(". ").append(tasks.getList().get(i)).append("\n");
+        }
+        return response.toString();
+    }
+
+    /**
+     * Generates a response for the user's chat message.
+     */
+    public String getResponse(String input) {
+        try {
+            // 1. Parse the input into a Command object
+            Command c = parser.parse(input);
+
+            // 2. Execute the command and return the output string
+            return c.execute(tasks, ui, storage);
+
+        } catch (DoobertException e) {
+            // If an error occurs, return the error message
+            return "Error: " + e.getMessage();
+        }
+    }
+
+
 }

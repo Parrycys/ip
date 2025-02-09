@@ -46,7 +46,6 @@ public class Deadline extends Task {
                 this.byDateTime = LocalDateTime.parse(datePart + " " + timePart, formatterWithTime);
             } else if (by.matches("\\d{1,2}-\\d{1,2}-\\d{4} \\d{4}")) {
                     try {
-                        //System.out.println("DEBUG: Trying to parse -> " + by); // Debugging Line
                         this.byDateTime = LocalDateTime.parse(by, formatterWithTimeForDash);
                     } catch (DateTimeParseException e) {
                         throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', "

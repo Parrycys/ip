@@ -8,6 +8,10 @@ public class DoobertException extends Exception {
         super(message);
     }
 
+    public DoobertException(String message, Throwable cause) {
+        super(message, cause);
+    }
+
     public static void validateTaskIndex(int index, int taskListSize) throws DoobertException {
         if (index < 0 || index >= taskListSize) {
             throw new DoobertException("Invalid task number. No such task exists.");

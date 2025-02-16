@@ -134,7 +134,7 @@ public class Event extends Task {
     /**
      * Finds the next occurrence of a given day of the week.
      *
-     * @param targetDay The target day (e.g., MONDAY).
+     * @param targetDay The target day (e.g. MONDAY).
      * @return The LocalDate of the next occurrence of that day.
      */
     private LocalDate getNextOccurrence(DayOfWeek targetDay) {

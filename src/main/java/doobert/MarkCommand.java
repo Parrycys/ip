@@ -32,7 +32,7 @@ public class MarkCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         // Validate the index before marking
-        DoobertException.validateMarkCommand(index, tasks.getList().size());
+        DoobertException.validateTaskIndex(index, tasks.getList().size());
 
         // Get the task reference
         Task task = tasks.getList().get(index);

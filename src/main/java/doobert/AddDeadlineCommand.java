@@ -1,6 +1,5 @@
 package doobert;
 
-import java.util.Arrays;
 
 /**
  * Represents a command to add a deadline task.

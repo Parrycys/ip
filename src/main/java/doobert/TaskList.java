@@ -63,12 +63,14 @@ public class TaskList {
      * @param index The index of the task to mark as done (zero-based index).
      */
     public void markTask(int index) {
-        if (index >= 0 && index < listOfItems.size()) {
-            listOfItems.get(index).markAsDone();
-        } else {
+        boolean isValidIndex = index >= 0 && index < listOfItems.size();
+        if (!isValidIndex) {
             System.out.println("Invalid task number.");
+            return;
         }
+        listOfItems.get(index).markAsDone();
     }
+
 
     /**
      * Unmarks a task (marks it as not done).
@@ -76,10 +78,12 @@ public class TaskList {
      * @param index The index of the task to unmark (zero-based index).
      */
     public void unmarkTask(int index) {
-        if (index >= 0 && index < listOfItems.size()) {
-            listOfItems.get(index).markAsUndone();
-        } else {
+        boolean isValidIndex = index >= 0 && index < listOfItems.size();
+        if (!isValidIndex) {
             System.out.println("Invalid task number.");
+            return;
         }
+        listOfItems.get(index).markAsUndone();
     }
+
 }

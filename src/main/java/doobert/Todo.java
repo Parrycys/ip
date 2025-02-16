@@ -16,16 +16,6 @@ public class Todo extends Task {
     }
 
     /**
-     * Factory method to create a new Todo task.
-     *
-     * @param description The description of the Todo task.
-     * @return A new Todo task instance.
-     */
-    public static Todo createTodo(String description) {
-        return new Todo(description);
-    }
-
-    /**
      * Returns the string representation of the Todo task for user display.
      *
      * @return The formatted string representation of the Todo task.

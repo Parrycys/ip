@@ -4,7 +4,7 @@ package doobert;
  * Represents a command that unmarks a task as done in the task list.
  */
 public class UnmarkCommand extends Command {
-    private int index;
+    private final int index;
 
     /**
      * Constructs an {@code UnmarkCommand} object with the specified task index.
@@ -32,8 +32,8 @@ public class UnmarkCommand extends Command {
      */
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
-        // Validate the index before deletion
-        DoobertException.validateUnmarkCommand(index, tasks.getList().size());
+        // Validate the index before unmarking
+        DoobertException.validateTaskIndex(index, tasks.getList().size());
 
         // Get the task reference
         Task task = tasks.getList().get(index);

@@ -37,6 +37,8 @@ public class Parser {
             return new UnmarkCommand(arguments);
         case "find":
             return new FindCommand(arguments);
+        case "view":
+            return new ViewScheduleCommand(parts.length > 1 ? parts[1] : "");
         default:
             throw new DoobertException("Sorry, I do not understand that.");
         }

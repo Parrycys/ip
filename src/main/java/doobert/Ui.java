@@ -24,10 +24,12 @@ public class Ui {
      * Displays the welcome message when the program starts.
      */
     public void showWelcome() {
-        writer.print("   ____________________________________________________________\n"
-                + "    Hello! I'm Doobert\n"
-                + "    What can I do for you?\n"
-                + "   ____________________________________________________________\n");
+        writer.print("""
+                   ____________________________________________________________
+                    Hello! I'm Doobert
+                    What can I do for you?
+                   ____________________________________________________________
+                """);
         writer.flush();
     }
 

@@ -4,7 +4,7 @@ package doobert;
  * Represents a command to delete a task from the task list.
  */
 public class DeleteCommand extends Command {
-    private int index;
+    private final int index;
 
     /**
      * Constructs a {@code DeleteCommand} with the specified task number.
@@ -32,7 +32,7 @@ public class DeleteCommand extends Command {
     @Override
     public String execute(TaskList tasks, Ui ui, Storage storage) throws DoobertException {
         // Validate the index before deletion
-        DoobertException.validateDeleteCommand(index, tasks.getList().size());
+        DoobertException.validateTaskIndex(index, tasks.getList().size());
         Task deletedTask = tasks.getList().get(index);
 
         // Perform deletion

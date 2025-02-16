@@ -14,6 +14,11 @@ import java.util.Locale;
  * - A weekday name (e.g., "Sunday" → next occurrence)
  */
 public class Deadline extends Task {
+    private static final DateTimeFormatter FORMATTER_WITH_TIME = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
+    private static final DateTimeFormatter FORMATTER_DATE_ONLY = DateTimeFormatter.ofPattern("yyyy-M-d");
+    private static final DateTimeFormatter FORMATTER_WITH_DASH = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
+
+
     protected LocalDateTime byDateTime;
     protected LocalDate byDate;
 
@@ -27,39 +32,83 @@ public class Deadline extends Task {
     public Deadline(String description, String by) {
         super(description);
 
-        // Define formatters
-        DateTimeFormatter formatterWithTime = DateTimeFormatter.ofPattern("d/M/uuuu HHmm");
-        DateTimeFormatter formatterDateOnly = DateTimeFormatter.ofPattern("yyyy-M-d");
-        DateTimeFormatter formatterWithTimeForDash = DateTimeFormatter.ofPattern("d-M-yyyy HHmm");
+        assert description != null && !description.trim().isEmpty() : "Deadline description cannot be empty!";
+        assert by != null && !by.trim().isEmpty() : "Deadline due date cannot be empty!";
 
+        this.byDateTime = parseDateTime(by);
+        if (this.byDateTime == null) {
+            this.byDate = parseDate(by);
+        }
+    }
+
+    /**
+     * Attempts to parse a date string into LocalDateTime.
+     *
+     * @param by The date string to be parsed.
+     * @return A valid LocalDateTime instance or null if not found.
+     */
+    private LocalDateTime parseDateTime(String by) {
+        if (by.matches("\\d+/\\d+/\\d+ \\d+")) {
+            return parseDateTimeWithTime(by, FORMATTER_WITH_TIME);
+        } else if (by.matches("\\d{1,2}-\\d{1,2}-\\d{4} \\d{4}")) {
+            return parseDateTimeWithTime(by, FORMATTER_WITH_DASH);
+        }
+        return null;
+    }
+
+    /**
+     * Parses a date string containing time using the specified formatter.
+     *
+     * @param dateTime The date string.
+     * @param formatter The formatter to use.
+     * @return A parsed LocalDateTime.
+     * @throws IllegalArgumentException If parsing fails.
+     */
+    private LocalDateTime parseDateTimeWithTime(String dateTime, DateTimeFormatter formatter) {
         try {
-            // Handle full date + time
-            if (by.matches("\\d+/\\d+/\\d+ \\d+")) {
-                String[] parts = by.split(" ");
-                String datePart = parts[0];
-                String timePart = parts[1];
+            String[] parts = dateTime.split(" ");
+            String datePart = parts[0];
+            String timePart = parts[1];
 
-                if (timePart.length() == 3) { // Ensure 4-digit time (e.g., 800 → 0800)
-                    timePart = "0" + timePart;
-                }
+            // Ensure time is 4-digit format (e.g., "800" → "0800")
+            if (timePart.length() == 3) {
+                timePart = "0" + timePart;
+            }
 
-                this.byDateTime = LocalDateTime.parse(datePart + " " + timePart, formatterWithTime);
-            } else if (by.matches("\\d{1,2}-\\d{1,2}-\\d{4} \\d{4}")) {
-                    try {
-                        this.byDateTime = LocalDateTime.parse(by, formatterWithTimeForDash);
-                    } catch (DateTimeParseException e) {
-                        throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', "
-                                + "'yyyy-MM-dd', " + "or a weekday name like 'Sunday'.");
-                    }
-                }
-            // Handle numeric date-only input
-            else if (by.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) {
-                this.byDate = LocalDate.parse(by, formatterDateOnly);
-            }
-            // Handle weekday names like "Sunday"
-            else {
-                this.byDate = getNextDayOfWeek(by);
-            }
+            return LocalDateTime.parse(datePart + " " + timePart, formatter);
+        } catch (DateTimeParseException e) {
+            throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', "
+                    + "'yyyy-MM-dd', or a weekday name like 'Sunday'.");
+        }
+    }
+
+    /**
+     * Attempts to parse a date-only format or a weekday name.
+     *
+     * @param by The date string.
+     * @return A valid LocalDate instance.
+     * @throws IllegalArgumentException If parsing fails.
+     */
+    private LocalDate parseDate(String by) {
+        if (by.matches("\\d{1,2}/\\d{1,2}/\\d{4}")) {
+            return parseLocalDate(by, DateTimeFormatter.ofPattern("d/M/yyyy"));
+        } else if (by.matches("\\d{4}-\\d{1,2}-\\d{1,2}")) {
+            return parseLocalDate(by, FORMATTER_DATE_ONLY);
+        }
+        return parseNextWeekday(by);
+    }
+
+    /**
+     * Parses a LocalDate from a string using the given formatter.
+     *
+     * @param date The date string.
+     * @param formatter The formatter to use.
+     * @return The parsed LocalDate.
+     * @throws IllegalArgumentException If parsing fails.
+     */
+    private LocalDate parseLocalDate(String date, DateTimeFormatter formatter) {
+        try {
+            return LocalDate.parse(date, formatter);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', "
                     + "or a weekday name like 'Sunday'.");
@@ -73,15 +122,14 @@ public class Deadline extends Task {
      * @return The {@code LocalDate} representing the next occurrence of the given weekday.
      * @throws IllegalArgumentException If the provided day name is not valid.
      */
-    private LocalDate getNextDayOfWeek(String dayName) {
+    private LocalDate parseNextWeekday(String dayName) {
         try {
             DayOfWeek targetDay = DayOfWeek.valueOf(dayName.toUpperCase(Locale.ROOT)); // Convert to uppercase
             LocalDate today = LocalDate.now();
             int daysUntilNext = (targetDay.getValue() - today.getDayOfWeek().getValue() + 7) % 7;
             return today.plusDays(daysUntilNext == 0 ? 7 : daysUntilNext); // If today is the day, move to next week
         } catch (IllegalArgumentException e) {
-            throw new IllegalArgumentException("Invalid deadline format: Use 'd/M/yyyy HHmm', 'yyyy-MM-dd', "
-                    + "or a weekday name like 'Sunday'.");
+            throw new IllegalArgumentException("Invalid weekday name: Use a valid weekday like 'Sunday'.");
         }
     }
 

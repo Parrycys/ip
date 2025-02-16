@@ -7,7 +7,7 @@ import java.util.List;
  * The {@code Storage} class handles loading tasks from a file and saving tasks to a file.
  */
 public class Storage {
-    private String filePath;
+    private final String FILE_PATH;
 
     /**
      * Constructs a {@code Storage} object with the specified file path.
@@ -15,7 +15,9 @@ public class Storage {
      * @param filePath The path to the file where tasks are stored.
      */
     public Storage(String filePath) {
-        this.filePath = filePath;
+        assert filePath != null : "File path should not be null.";
+        this.FILE_PATH = filePath;
+
     }
 
     /**
@@ -26,7 +28,7 @@ public class Storage {
      */
     public List<Task> loadTasks() throws DoobertException {
         List<Task> listOfItems = new ArrayList<>();
-        File file = new File(filePath);
+        File file = new File(FILE_PATH);
 
         if (!file.exists()) {
             throw new DoobertException("No previous tasks found.");
@@ -61,7 +63,7 @@ public class Storage {
      */
     public void saveTask(TaskList taskList) {
         try {
-            File file = new File(filePath);
+            File file = new File(FILE_PATH);
             file.getParentFile().mkdirs();
             PrintWriter writer = new PrintWriter(new FileWriter(file));
             List<Task> listOfItems = taskList.getList();
@@ -69,6 +71,7 @@ public class Storage {
                 writer.println(task.toFileString());
             }
             writer.close();
+            assert file.exists() : "Error: File doobert.txt was not created!";
         } catch (IOException e) {
             System.out.println("Error saving tasks: " + e.getMessage());
         }

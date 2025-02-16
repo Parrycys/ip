@@ -1,8 +1,13 @@
-    T | 0 | return book
-    E | 0 | project meeting | Jan 02 2019 1400 - 1600
-    E | 0 | project meeting | Dec 22 2019 0400 - 0600
+    T | 0 | read book
+    T | 0 | buy bread
     E | 0 | project meeting | Dec 22 2019 1400 - 1600
-    E | 0 | project meeting | Dec 22 2019 0400 - 0600
+    E | 0 | project meeting | Jan 02 2019 1400 - 1600
+    D | 0 | return book | Dec 22 2019 1800
+    D | 0 | return book | Oct 15 2019
+    D | 0 | return book | Jan 01 2019
+    D | 0 | return book | Feb 17 2025
+    D | 0 | return book | Dec 02 2019 0800
+    E | 0 | project meeting | Dec 22 2019 1400 - 1600
     D | 0 | return book | Dec 02 2019 1800
     D | 0 | return book | Dec 02 2019 0800
     D | 0 | return book | Dec 22 2019 1800
@@ -10,3 +15,11 @@
     D | 0 | return book | Jan 01 2019
     E | 0 | project meeting | Dec 22 2019 1400 - 1600
     E | 0 | project meeting | Jan 02 2019 1400 - 1600
+    D | 0 | return book | Oct 15 2019
+    D | 0 | return book | Feb 23 2025
+    D | 0 | return book | Dec 02 2019
+    E | 0 | project meeting | Jan 02 2019 1400 - 1600
+    E | 0 | project meeting | Jan 02 2019 1400 - 1600
+    E | 0 | read | Feb 16 2025 1400 - 1600
+    E | 1 | office hours | Feb 17 2025 1400 - 1600
+    T | 0 | school

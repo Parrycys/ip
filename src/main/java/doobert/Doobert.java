@@ -1,5 +1,7 @@
 package doobert;
 
+import java.io.File;
+
 /**
  * The main class for the Doobert chatbot application.
  * <p>
@@ -19,7 +21,6 @@ public class Doobert {
     private TaskList tasks;
     private Ui ui;
     private Parser parser;
-    private static final String FILE_PATH = "./data/doobert.txt";
 
     /**
      * Constructs a new Doobert instance.
@@ -30,6 +31,7 @@ public class Doobert {
         ui = new Ui();
         storage = new Storage(FILE_PATH);
         parser = new Parser();
+
         try {
             tasks = new TaskList(storage.loadTasks());
         } catch (DoobertException e) {
@@ -48,6 +50,7 @@ public class Doobert {
             try {
                 String fullCommand = ui.readCommand();
                 Command c = parser.parse(fullCommand);
+                assert c != null : "Parsed command should never be null.";
                 c.execute(tasks, ui, storage);
                 isExit = c.isExit();
             } catch (DoobertException e) {
@@ -56,16 +59,20 @@ public class Doobert {
         }
     }
 
-    /**
-     * The main entry point of the application.
-     *
-     * @param args Command-line arguments (not used).
-     */
     public static void main(String[] args) {
         new Doobert("./data/doobert.txt").run();
     }
 
     public String getStartupMessage() {
+        File file = new File("./data/doobert.txt");
+
+        if (!file.exists()) {
+            return "Welcome to Doobert!\nNo saved file found. "
+                    + "Creating one just for you. "
+                    + "Start adding tasks!";
+        }
+        assert file.exists() : "File should be created but does not exist!";
+
         if (tasks.getList().isEmpty()) {
             return "Welcome to Doobert!\nYou have no saved tasks.";
         }

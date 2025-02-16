@@ -17,15 +17,23 @@ public class AddEventCommand extends Command {
      * @param arguments The user input containing the task description, start time, and end time.
      * @throws DoobertException If the command format is invalid.
      */
-    public AddEventCommand(String arguments) throws DoobertException{
+    public AddEventCommand(String arguments) throws DoobertException {
         String[] parts = arguments.split("/from", 2); // Split at "/from" into description + time
         DoobertException.validateEventCommand(parts);
+
         description = parts[0].trim();
+        assert !description.isEmpty() : "Event description cannot be empty or null!";
+
         String[] timeParts = parts[1].split("/to", 2); // Split /from part into from and to
         DoobertException.validateEventCommand(timeParts);
+
         from = timeParts[0].trim();
         to = timeParts[1].trim();
+
+        assert !from.isEmpty() : "Start time ('from') cannot be empty!";
+        assert !to.isEmpty() : "End time ('to') cannot be empty!";
     }
+
 
     /**
      * Executes the command by adding a new event task to the task list.

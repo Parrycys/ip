@@ -1,21 +1,14 @@
 package doobert;
-import java.io.File;
+
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.time.format.DateTimeParseException;
+
 
 public class DoobertException extends Exception {
     public DoobertException(String message) {
         super(message);
     }
 
-    public static void validateMarkCommand(int index, int taskListSize) throws DoobertException {
-        if (index < 0 || index >= taskListSize) {
-            throw new DoobertException("Invalid task number. No such task exists.");
-        }
-    }
-
-    public static void validateUnmarkCommand(int index, int taskListSize) throws DoobertException {
+    public static void validateTaskIndex(int index, int taskListSize) throws DoobertException {
         if (index < 0 || index >= taskListSize) {
             throw new DoobertException("Invalid task number. No such task exists.");
         }
@@ -62,13 +55,4 @@ public class DoobertException extends Exception {
         }
     }
 
-    public static void validateDeleteCommand(int index, int taskListSize) throws DoobertException {
-        if (index < 0 || index >= taskListSize) {
-            throw new DoobertException("Invalid task number. No such task exists.");
-        }
-    }
-
-    public static void fileNotFound(File filePath) throws DoobertException {
-        throw new DoobertException(filePath + " File not found.");
-    }
 }

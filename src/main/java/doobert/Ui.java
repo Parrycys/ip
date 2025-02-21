@@ -55,12 +55,6 @@ public class Ui {
             System.out.println("    No saved file found! Creating one just for you.");
     }
 
-    /**
-     * Displays a horizontal line for UI formatting.
-     */
-    public void showLine() {
-        System.out.println("   ____________________________________________________________");
-    }
 
     /**
      * Displays a standard output message to the user.

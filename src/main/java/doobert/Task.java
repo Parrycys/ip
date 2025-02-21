@@ -52,7 +52,7 @@ public abstract class Task {
      * @throws IllegalArgumentException If the file format is invalid.
      */
     public static Task fromFileString(String fileString) throws DoobertException {
-        String[] parts = fileString.split("\\s*\\|\\s*"); // Properly split parts
+        String[] parts = fileString.split("\\s*\\|\\s*");
 
         if (parts.length < 3) {
             throw new IllegalArgumentException("Invalid file format: " + fileString);

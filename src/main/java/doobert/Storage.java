@@ -42,7 +42,7 @@ public class Storage {
                 try {
                     Task task = Task.fromFileString(line.trim());
                     listOfItems.add(task);
-                    response.append(task).append("\n"); // Append task to response
+                    response.append(task).append("\n");
                 } catch (IllegalArgumentException e) {
                     System.out.println("Skipping invalid task format: " + line);
                 }

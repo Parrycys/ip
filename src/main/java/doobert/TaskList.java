@@ -54,7 +54,7 @@ public class TaskList {
      */
     public List<Task> deleteTask(int index) {
         if (index >= 0 && index < listOfItems.size()) {
-            Task removedTask = listOfItems.remove(index); // Remove task from the list
+            Task removedTask = listOfItems.remove(index);
         } else {
             System.out.println("Invalid task number to delete.");
         }

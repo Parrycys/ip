@@ -50,7 +50,7 @@ public class Event extends Task {
      * @throws IllegalArgumentException If parsing fails.
      */
     private LocalTime parseTimeOnly(String time) {
-        // ✅ Ensure AM/PM is uppercase for parsing
+
         time = time.trim().toUpperCase();
 
         // ✅ Ensure "2pm" becomes "02PM" for proper parsing
@@ -61,7 +61,7 @@ public class Event extends Task {
         DateTimeFormatter timeFormatter = DateTimeFormatter.ofPattern("hha", Locale.ENGLISH);
 
         try {
-            return LocalTime.parse(time, timeFormatter); // ✅ Ensures correct parsing
+            return LocalTime.parse(time, timeFormatter);
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("Invalid time format: Use '2pm', '11AM', etc.");
         }
@@ -96,7 +96,7 @@ public class Event extends Task {
             String timePart = parts[1]; // "2pm"
 
             if (timePart.matches("\\d{1,2}[apAP][mM]")) {
-                return parseWeekdayTime(dayPart, timePart); // ✅ FIX: Correct method call
+                return parseWeekdayTime(dayPart, timePart);
             }
         }
 

@@ -41,7 +41,7 @@ public class DeleteCommand extends Command {
         // Save updated tasks
         storage.saveTask(tasks);
 
-        // Notify the user
+
         return  "Noted. I've removed this task:\n   " + deletedTask
                 + "\n   Now you have " + tasks.getList().size() + " tasks in the list.";
 

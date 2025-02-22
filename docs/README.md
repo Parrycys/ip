@@ -7,9 +7,9 @@ Doobert chatbot is a Graphical User Interface (GUI) application available for ev
 simplify their life **by tracking their daily tasks** without the need to constantly worry about deadlines.
 
 ## Adding deadlines
-**Simply** type the task and deadline due to add the task to the list.
+Type the task and deadline due to add the task to the list.
 
-Format: `deadline <description> /by <Date/Day due> <time>`  
+Format: `deadline <description> /by <Date or Day due> <time>`  
 Tip: Time is optional  
 Examples:  
 - `deadline return book /by Sunday`
@@ -23,7 +23,7 @@ Got it. I've added this task:
 ```
 
 ## Adding events
-Format: `event <description> /from <Date> <time> /to <time>`
+Format: `event <description> /from <Date> <time> /to <time>`  
 Examples:  
 - `event project meeting /from 2025-12-22 1400 /to 1600`
 - `event meetup /from 2pm /to 4pm`
@@ -36,7 +36,7 @@ Got it. I've added this task:
 ```
 
 ## Adding todo tasks
-Format: `todo <description>`
+Format: `todo <description>`  
 Example:  
 - `todo buy groceries` 
 
@@ -48,8 +48,8 @@ Got it. I've added this task:
 ```
 
 ## Marking tasks
-To mark a task as completed. </br>
-Format: `mark <index>`
+To mark a task as completed.  
+Format: `mark <index>`  
 Example:
 - `mark 1`
 

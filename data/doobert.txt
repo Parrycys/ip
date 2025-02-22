@@ -7,3 +7,6 @@
     T | 0 | groceries
     E | 0 | family dinner | Feb 24 2025 1700 - 1900
     D | 0 | assignment | Mar 06 2025 2359
+    E | 0 | read | Feb 23 2025 1400 - 1600
+    D | 0 | return book | Mar 02 2025
+    D | 0 | return book | Mar 02 2025

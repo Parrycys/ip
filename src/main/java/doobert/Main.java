@@ -22,6 +22,7 @@ public class Main extends Application {
             AnchorPane ap = fxmlLoader.load();
             Scene scene = new Scene(ap);
             stage.setScene(scene);
+            stage.setTitle("Doobert");
             fxmlLoader.<MainWindow>getController().setDoobert(doobert);  // inject the Doobert instance
             stage.show();
         } catch (IOException e) {

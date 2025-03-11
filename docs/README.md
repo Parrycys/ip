@@ -59,6 +59,17 @@ Nice! I've marked this task as done:
    [X] buy groceries
 ```
 
+## Unmark tasks
+To unmark a task.
+Format: `unmark <index>`
+Example:
+- `unmark 1` 
+
+
+```
+OK, I've marked this task as not done yet:
+   [] buy groceries
+```
 
 ## List all tasks
 Displays all tasks saved in a list.
@@ -71,4 +82,15 @@ Here are the tasks in your list:
    2. [D] [ ] return book (by: Feb 02 2025)
    3. [E] [ ] project meeting (from: Mon 2pm-4pm)
    4. [E] [ ] read (from: 2pm-4pm)
+```
+
+## Finding tasks
+Finds tasks contained in task list based on description.
+Format: `find <description>`
+Example:
+- `find return book`
+
+```
+Here are the matching tasks in your list:
+1. [D] [ ] return book (by: Feb 02 2025)
 ```

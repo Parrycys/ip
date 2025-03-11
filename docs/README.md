@@ -60,8 +60,8 @@ Nice! I've marked this task as done:
 ```
 
 ## Unmark tasks
-To unmark a task.
-Format: `unmark <index>`
+To unmark a task that was previously marked.    
+Format: `unmark <index>`  
 Example:
 - `unmark 1` 
 
@@ -72,8 +72,8 @@ OK, I've marked this task as not done yet:
 ```
 
 ## List all tasks
-Displays all tasks saved in a list.
-Format: `list`
+Displays all tasks saved in a list.  
+Format: `list`  
 
 
 ```
@@ -85,8 +85,8 @@ Here are the tasks in your list:
 ```
 
 ## Finding tasks
-Finds tasks contained in task list based on description.
-Format: `find <description>`
+Finds tasks contained in task list based on description.  
+Format: `find <description>`  
 Example:
 - `find return book`
 

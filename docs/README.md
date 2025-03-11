@@ -94,3 +94,15 @@ Example:
 Here are the matching tasks in your list:
 1. [D] [ ] return book (by: Feb 02 2025)
 ```
+
+## Delete tasks
+Delete tasks saved in list based on index.  
+Format: `delete <index>`  
+Example:
+- `delete 2`
+
+```
+Noted. I've removed this task:
+   [D] [ ] return book (by: Feb 02 2025)
+   Now you have 1 tasks in your list.
+```
